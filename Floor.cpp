@@ -1,20 +1,47 @@
 #include "Floor.h"
 
 void Floor::addPerson(Person p, int request) {
-
-	// TODO: finish addPerson
+	if(numPeople < MAX_PEOPLE_PER_FLOOR){
+		people[numPeople] = p;
+		numPeople++;
+		if(request > 0){
+			hasUpRequest = true;
+		}
+		if(request < 0){
+			hasDownRequest = true;
+		}
+	}
 }
 
 void Floor::removePeople(int indicesToRemove[MAX_PEOPLE_PER_FLOOR], int numPeopleToRemove){
-	
-	// TODO: finish removePeople
+	for (int i = 0; i < numPeopleToRemove; i++){
+		people[indicesToRemove[i]] = NULL;
+		numPeople--;
+	}
+	for(int i = 0; i < MAX_PEOPLE_PER_FLOOR-1; i++){
+		while(people[i] == NULL){
+			people[i] = people[i+1];
+		}
+	}
 }
 
 int Floor::tick(int currentTime) {
-    
-	// TODO: finish tick
-	// returning 0 to prevent compilation error
-	return 0;
+	bool exploded = false;
+	int count = 0;
+	int indicesToRemove[MAX_PEOPLE_PER_FLOOR];
+	for (int i = 0; i < numPeople; i++){
+		exploded = people[i].tick(currentTime);
+		if (exploded == true){
+			indicesToRemove[count] = i;
+			count++;
+		}
+	}
+	int newIndicesToRemove[count];
+	for (int i = 0; i < count; i++){
+		newIndicesToRemove[i] = indicesToRemove[i];
+	}
+	removePeople(newIndicesToRemove, count);
+	return count;
 }
 
 ///////////////////////////////////////////////////////
