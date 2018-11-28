@@ -15,11 +15,11 @@ void Floor::addPerson(Person p, int request) {
 
 void Floor::removePeople(int indicesToRemove[MAX_PEOPLE_PER_FLOOR], int numPeopleToRemove){
 	for (int i = 0; i < numPeopleToRemove; i++){
-		people[indicesToRemove[i]] = NULL;
+		people[indicesToRemove[i]] = 0;
 		numPeople--;
 	}
 	for (int i = 0; i < MAX_PEOPLE_PER_FLOOR - 1; i++){
-		while (people[i] == NULL){
+		while (people[i] == 0){
 			people[i] = people[i + 1];
 		}
 	}
